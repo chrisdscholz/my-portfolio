@@ -2,16 +2,19 @@
     <title>Projects</title>
 </svelte:head>
 
+<script>
+    import projects from '$lib/projects.json';
+    import Project from '$lib/Project.svelte';
+</script>
+
 <h4>Menu</h4>
 
-    <h1>Projects</h1>
+    <h1>{projects.length} Projects</h1>
     <div class="projects">
-        <article>
-            <h2>Lorem ipsum dolor sit.</h2>
-            <img src="https://vis-society.github.io/labs/2/images/empty.svg" alt="">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi doloribus aspernatur laborum, debitis neque temporibus accusantium possimus a veniam dolore. Quam natus aperiam dicta sed atque obcaecati culpa consequatur porro.</p>
-        </article>
-        <article>
+        {#each projects as p}
+            <Project data={p} hLevel=3 />
+        {/each}
+<!--         <article>
             <h2>Numquam suscipit ea laboriosam.</h2>
             <img src="https://vis-society.github.io/labs/2/images/empty.svg" alt="">
             <p>Repellat eos doloribus, asperiores non a, in explicabo alias quaerat sunt veritatis minima, molestias reprehenderit rerum enim beatae voluptatibus possimus mollitia adipisci. Unde neque at est autem amet ipsum reiciendis!</p>
@@ -65,10 +68,10 @@
             <h2>Deserunt deleniti praesentium repellat!</h2>
             <img src="https://vis-society.github.io/labs/2/images/empty.svg" alt="">
             <p>Non, harum omnis esse at consequuntur laborum similique eveniet labore libero unde, qui tempora. Et, minus quas! Fugiat cum omnis eaque adipisci, minima soluta dolorem, distinctio suscipit, dolore aperiam animi?</p>
-        </article>
+        </article> -->
     </div>
 
     <link href="../style.css"
     rel="stylesheet" />
-    <script src="../global.js"
-    type="module"></script>
+<!--     <script src="../global.js"
+    type="module"></script> -->
