@@ -1,5 +1,6 @@
-YOLO <slot />
 <script>
+    import { page } from '$app/stores';
+
     let pages = [
         {url: './', title: 'Home'},
         {url: 'projects', title: 'Projects'},
@@ -9,9 +10,18 @@ YOLO <slot />
     ];
 </script>
 
+{
+    JSON.stringify($page)
+}
+
 <nav>
-    {#each pages as p}
-    href={p.url};
-    textContent={p.title};
-    {/each}
+    <ul>
+        {#each pages as p}
+            <a href={p.url} class:current={'.' + $page.route.id === p.url}>
+                {p.title}
+            </a>
+        {/each}
+    </ul>
 </nav>
+
+<slot />
