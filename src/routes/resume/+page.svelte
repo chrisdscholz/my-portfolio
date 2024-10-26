@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <link href="../style.css"
+<!--     <link href="../style.css"
     rel="stylesheet" />
     <script src="../global.js"
-    type="module"></script>
+    type="module"></script> -->

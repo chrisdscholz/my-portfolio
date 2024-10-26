@@ -19,7 +19,7 @@
         {/each}
     </div>
 
-    <link href="style.css"
-    rel="stylesheet" />
+<!--     <link href="style.css"
+    rel="stylesheet" /> -->
 <!--     <script src="global.js"
     type="module"></script> -->
