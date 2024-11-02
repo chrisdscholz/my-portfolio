@@ -18,7 +18,8 @@
     <h6>{data.title}</h6>
     {/if}
     <svelte:element this={'h' + hLevel}>{data.title}</svelte:element>
-    <img src={data.image} alt="">
+    <p>{data.year}</p>
+    <img src={data.image} alt="" class="responsive_image">
     <p>{data.description}</p>
 </article>
 
@@ -26,7 +27,13 @@
     article {
     display: grid;
     grid-template-rows: subgrid;
-    grid-row: span 3;
+    grid-row: span 4;
     margin: 0;
+    }
+
+    .responsive_image {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
     }
 </style>

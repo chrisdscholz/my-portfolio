@@ -95,7 +95,7 @@ div.projects {
 div.projects article {
     display: grid;
     grid-template-rows: subgrid;
-    grid-row: span 3;
+    grid-row: span 4;
     margin: 0;
 }
 
@@ -118,10 +118,34 @@ div.resume.education {
     grid-column: 1 / -1;
 }
 
-label.color-scheme {
+/* label.color-scheme {
     position:absolute;
     top: 1rem;
     right: 1rem;
     font-size: 80%;
     font-family: inherit;
+} */
+
+/* section.API_stats {
+    font: inherit;
+    display: flex;
+    gap: 10px;
+} */
+
+section.API_stats dl {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+section.API_stats dt {
+    grid-row: 1;
+    text-align: center;
+    font-weight: bold;
+}
+
+section.API_stats dd {
+    grid-row: 2;
+    text-align: center;
+    margin: 0;
 }

@@ -9,6 +9,21 @@
         {url: 'resume', title: 'Resume'},
         {url: 'https://github.com/chrisdscholz', title: 'My GitHub Profile'},
     ];
+
+    //color scheme switch
+    let colorScheme = 'light dark';
+
+    let root = globalThis?.document?.documentElement;
+
+    $: root?.style.setProperty('color-scheme', colorScheme);
+
+    let localStorage = globalThis.localStorage ?? {};
+
+    if (localStorage.colorScheme) {
+        colorScheme = localStorage.colorScheme;
+    }
+
+    $: localStorage.colorScheme = colorScheme;
 </script>
 
 <nav>
@@ -26,6 +41,16 @@
         {/each}
     </ul>
 </nav>
+
+<label class="color-scheme">
+    Theme:
+    <select bind:value={ colorScheme } id="selector">
+        <option value="auto">Automatic</option>
+        <option value="light dark">Light Dark</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
+</label>
 
 <style>
     nav {
@@ -66,6 +91,15 @@
         border-bottom-style: solid;
         border-bottom-color: var(--color-accent);
     }
+
+    label.color-scheme {
+        position:absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 80%;
+        font-family: inherit;
+    }
+
 </style>
 
 <slot />

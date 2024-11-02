@@ -1,6 +1,8 @@
 <script>
     import projects from '$lib/projects.json';
     import Project from '$lib/Project.svelte';
+
+
 </script>
     
     <h4>Menu</h4>
@@ -18,6 +20,34 @@
             <Project data={p} hLevel=3 />
         {/each}
     </div>
+
+    <h2>My GitHub Stats</h2>
+
+    {#await fetch("https://api.github.com/users/chrisdscholz") }
+    <p>Loading...</p>
+    {:then response} {#await response.json()}
+    <p>Decoding...</p>
+    {:then data}
+    <section class="API_stats">
+        <dl>
+            <dt>Followers: </dt>
+            <dd>{ JSON.stringify(data.followers) }</dd>
+
+            <dt>Following: </dt>
+            <dd>{ JSON.stringify(data.following) }</dd>
+
+            <dt>Public Repos: </dt>
+            <dd>{ JSON.stringify(data.public_repos) }</dd>
+
+            <dt>Public Gists: </dt>
+            <dd>{ JSON.stringify(data.public_gists) }</dd>
+        </dl>
+    </section>
+    {:catch error}
+    <p class="error">Something went wrong: {error.message}</p>
+    {/await} {:catch error}
+    <p class="error">Something went wrong: {error.message}</p>
+    {/await}
 
 <!--     <link href="style.css"
     rel="stylesheet" /> -->
