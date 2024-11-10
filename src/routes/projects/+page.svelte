@@ -3,18 +3,71 @@
 </svelte:head>
 
 <script>
+    import * as d3 from "d3";
+
     import projects from '$lib/projects.json';
     import Project from '$lib/Project.svelte';
     import Pie from '$lib/Pie.svelte';
+
+    // let rolledData = d3.rollups(
+    //     filteredProjects,
+    //     (v) => v.length,
+    //     (d) => d.year,
+    // );
+
+    let rolledData;
+
+    let pieData;
+
+    $: {
+        pieData = {};
+        
+        rolledData = {};
+
+        rolledData = d3.rollups(
+            filteredProjects,
+            (v) => v.length,
+            (d) => d.year,
+        );
+
+        pieData = rolledData.map(([year, count]) => {
+        return {value: count, label: year };
+    });
+    }
+
+    // let pieData = rolledData.map(([year, count]) => {
+    //     return {value: count, label: year };
+    // });
+
+    let query = '';
+
+    let filteredProjects;
+    $: filteredProjects = projects.filter((project) => {
+        // if (query) {
+        //     return project.title.toLowerCase().includes(query.toLowerCase());
+        // }
+
+        // return true;
+
+        let values = Object.values(project).join('\n').toLowerCase();
+        return values.includes(query.toLowerCase());
+    });
 </script>
 
 <h4>Menu</h4>
 
-<Pie />
+<Pie data={pieData}/>
 
-    <h1>{projects.length} Projects</h1>
+<input 
+    type="search"
+    bind:value="{query}"
+    aria-label="Search projects"
+    placeholder="Search projects..."
+/>
+
+    <h1>{filteredProjects.length} Projects</h1>
     <div class="projects">
-        {#each projects as p}
+        {#each filteredProjects as p}
             <Project data={p} hLevel=3 />
         {/each}
 <!--         <article>
