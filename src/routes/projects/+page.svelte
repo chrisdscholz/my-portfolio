@@ -43,11 +43,6 @@
 
     let filteredProjects;
     $: filteredProjects = projects.filter((project) => {
-        // if (query) {
-        //     return project.title.toLowerCase().includes(query.toLowerCase());
-        // }
-
-        // return true;
 
         let values = Object.values(project).join('\n').toLowerCase();
         return values.includes(query.toLowerCase());
@@ -57,6 +52,12 @@
     let selectedYear;
     $: selectedYear = 
         selectedYearIndex > -1 ? pieData[selectedYearIndex].label : null;
+
+    let filteredByYear;
+    $: filteredByYear = projects.filter((year) => {
+        let values = Object.values(year);
+        return values.includes(selectedYear);
+    })
 </script>
 
 <h4>Menu</h4>
@@ -73,9 +74,9 @@
     placeholder="Search projects..."
 />
 
-    <h1>{filteredProjects.length} Projects</h1>
+    <h1>{filteredByYear.length} Projects</h1>
     <div class="projects">
-        {#each filteredProjects as p}
+        {#each filteredByYear as p}
             <Project data={p} hLevel=3 />
         {/each}
 <!--         <article>
