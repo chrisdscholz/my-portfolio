@@ -55,8 +55,15 @@
 
     let filteredByYear;
     $: filteredByYear = projects.filter((year) => {
-        let values = Object.values(year);
-        return values.includes(selectedYear);
+        
+        if (selectedYear) {
+            let values = Object.values(year);
+            return values.includes(selectedYear);
+        }
+
+        if (selectedYearIndex == -1) {
+            return projects;
+        }
     })
 </script>
 
