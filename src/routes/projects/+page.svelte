@@ -52,11 +52,19 @@
         let values = Object.values(project).join('\n').toLowerCase();
         return values.includes(query.toLowerCase());
     });
+
+    let selectedYearIndex = -1;
+    let selectedYear;
+    $: selectedYear = 
+        selectedYearIndex > -1 ? pieData[selectedYearIndex].label : null;
 </script>
 
 <h4>Menu</h4>
 
-<Pie data={pieData}/>
+<Pie data={pieData} bind:selectedIndex="{selectedYearIndex}"/>
+
+<p>{ selectedYearIndex }</p>
+<p>{ selectedYear }</p>
 
 <input 
     type="search"
