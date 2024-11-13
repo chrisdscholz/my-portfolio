@@ -71,9 +71,6 @@
 
 <Pie data={pieData} bind:selectedIndex="{selectedYearIndex}"/>
 
-<p>{ selectedYearIndex }</p>
-<p>{ selectedYear }</p>
-
 <input 
     type="search"
     bind:value="{query}"
