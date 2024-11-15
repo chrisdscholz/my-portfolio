@@ -149,3 +149,21 @@ section.API_stats dd {
     text-align: center;
     margin: 0;
 }
+
+section.code_stats dl {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+section.code_stats dt {
+    grid-row: 1;
+    text-align: center;
+    font-weight: bold;
+}
+
+section.code_stats dd {
+    grid-row: 2;
+    text-align: center;
+    margin: 0;
+}
