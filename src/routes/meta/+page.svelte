@@ -1,6 +1,8 @@
 <script>
     import * as d3 from 'd3';
     import { onMount } from 'svelte';
+    import { computePosition, autoPlacement, offset } from '@floating-ui/dom';
+    import Pie from '$lib/Pie.svelte';
 
     let data = [];
 
@@ -105,13 +107,52 @@
     let hoveredIndex = -1;
     $: hoveredCommit = commits[hoveredIndex] ?? hoveredCommit ?? {};
 
-    let cursor = { x: 0, y: 0 };
+    // let cursor = { x: 0, y: 0 };
+
+    let commitTooltip;
+    let tooltipPosition = { x: 0, y: 0};
+
+    async function dotInteraction(index, evt) {
+        let hoveredDot = evt.target;
+
+        if (evt.type === 'mouseenter' || evt.type === 'focus') {
+            hoveredIndex = index;
+            // cursor = {x: evt.x, y: evt.y}
+            tooltipPosition = await computePosition(hoveredDot, commitTooltip, {
+                strategy: 'fixed',
+                middleware: [
+                    offset(5),
+                    autoPlacement(),
+                ],
+            });
+        }
+        else if (evt.type === 'mouseleave' || evt.type === 'blur') {
+            hoveredIndex = -1
+        }
+
+    }
+
+    let svg;
+    let brushSelection;
+
+    function brushed(evt) {
+            brushSelection = evt.selection;
+        }
+
+    $: {
+        d3.select(svg).call(d3.brush().on('start brush end', brushed));
+        d3.select(svg).selectAll('.dots, .overlay ~ *').raise();
+    }
+
+    $: {
+
+    }
 </script>
 
 <h1>Meta</h1>
 <p>This page includes stats about the code of this website</p>
 
-<p>{JSON.stringify(cursor, null, "\t")}</p>
+<p>{brushSelection}</p>
 
 <h2>Codebase stats</h2>
 <section class="code_stats">
@@ -133,7 +174,7 @@
     </dl>
 </section>
 
-<svg viewBox="0 0 {width} {height}">
+<svg viewBox="0 0 {width} {height}" bind:this={svg}>
     <g 
         class="gridlines"
         transform="translate({usableArea.left}, 0)"
@@ -153,28 +194,21 @@
         }
         r="7"
         fill="steelblue"
-        on:mouseenter={evt => {
-            hoveredIndex = index;
-            cursor = {x: evt.x, y: evt.y};
-        }} 
-        on:mouseleave={evt =>
-            hoveredIndex = -1}
+        on:mouseenter={evt => dotInteraction(index, evt)}
+        on:mouseleave={evt => dotInteraction(index, evt)}
+        tableindex="0"
+        aria-describedby="commit-tooltip"
+        role="tooltip"
+        aria-haspopup="true"
+        on:focus={evt => dotInteraction(index, evt)}
+        on:blur={evt => dotInteraction(index, evt)}
         />
         {/each}
     </g>
-
-    <!-- <dl id="commit-tooltip" class="info tooltip">
-        <dt>Commit</dt>
-        <dd>
-            <a href="{ hoveredCommit.url }" target="_blank">{ hoveredCommit.id }</a>
-        </dd>
-
-        <dt>Date</dt>
-        <dd>{ hoveredCommit.datetime?.toLocaleString("en", {dateStyle: "full"}) }</dd>
-    </dl> -->
 </svg>
 
-<dl id="commit-tooltip" class="info tooltip" hidden={hoveredIndex === -1} style="top: {cursor.y}px; left: {cursor.x}px">
+<dl id="commit-tooltip" class="info tooltip" hidden={hoveredIndex === -1} 
+    style="top: {tooltipPosition.y}px; left: {tooltipPosition.x}px" bind:this="{commitTooltip}">
     <dt>Commit ID</dt>
     <dd>
         <a href="{ hoveredCommit.url }" target="_blank">{ hoveredCommit.id }</a>
